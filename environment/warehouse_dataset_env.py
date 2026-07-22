@@ -1,3 +1,9 @@
+from networkx.generators import spectral_graph_forge
+from networkx.generators import spectral_graph_forge
+from networkx.generators import spectral_graph_forge
+from networkx.generators import spectral_graph_forge
+from networkx.generators import spectral_graph_forge
+from networkx.generators import spectral_graph_forge
 import random
 import numpy as np
 import gymnasium as gym
@@ -24,27 +30,33 @@ class WarehouseDatasetEnvironment(gym.Env):
         (0, -1),   # Left
         (0, 1)     # Right
     ]
-
+        
     ############################################################
-    # Constructor
-    ############################################################
+# Constructor
+############################################################
 
     def __init__(
         self,
-        dataset_path,
+        dataset_path=None,
         resolution=0.20,
         floor_threshold=0.15,
-        max_steps=300
+        max_steps=600
     ):
 
         super().__init__()
 
-        self.loader = LiDARLoader(dataset_path)
+        #    Default dataset path (for local machine)
+        if dataset_path is None:
+            dataset_path = "dataset"
+
+        self.dataset_path = dataset_path
+
+        self.loader = LiDARLoader(self.dataset_path)
 
         self.grid_generator = OccupancyGridGenerator(
-            resolution=resolution,
-            floor_threshold=floor_threshold
-        )
+        resolution=resolution,
+        floor_threshold=floor_threshold
+    )
 
         self.scan_names = self.loader.get_scan_names()
 
@@ -57,9 +69,9 @@ class WarehouseDatasetEnvironment(gym.Env):
         self.goal = None
         self.robot_position = None
 
-        ########################################################
-        # Determine observation size
-        ########################################################
+    ########################################################
+    # Determine observation size
+    ########################################################
 
         first_scan = self.loader.load_scan(self.scan_names[0])
 
@@ -75,6 +87,7 @@ class WarehouseDatasetEnvironment(gym.Env):
             shape=(3, h, w),
             dtype=np.uint8
         )
+
         ############################################################
     # Reset
     ############################################################
