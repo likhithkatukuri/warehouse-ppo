@@ -14,10 +14,10 @@ from environment.warehouse_dataset_env import WarehouseDatasetEnvironment
 ############################################################
 # Create Environment
 ############################################################
-
+DATASET_PATH = r"/content/drive/MyDrive/Dataset/bin"
 def make_env():
 
-    env = WarehouseDatasetEnvironment()
+    env = WarehouseDatasetEnvironment(dataset_path=DATASET_PATH)
 
     env = Monitor(env)
 
