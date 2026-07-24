@@ -105,6 +105,8 @@ class WarehouseDatasetEnvironment(gym.Env):
         points = self.loader.load_scan(scan_name)
 
         self.grid = self.grid_generator.generate(points)
+        print("Grid shape:", self.grid.shape)
+        
 
         sg = StartGoalGenerator(self.grid)
 
@@ -252,10 +254,6 @@ class WarehouseDatasetEnvironment(gym.Env):
 
         new_distance = self.distance_to_goal(self.robot_position)
 
-        print(
-            f"Current={current_distance:.2f}  "
-            f"New={new_distance:.2f}"
-        )
 
         reward = -0.1
 
