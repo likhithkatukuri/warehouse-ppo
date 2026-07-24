@@ -6,15 +6,16 @@ import os
 class PPOTrainer:
 
     def __init__(self, env):
-
         self.env = env
         self.model = None
 
     ##################################################
+    # Train PPO
+    ##################################################
 
     def train(
         self,
-        total_timesteps=50000,
+        total_timesteps=500000,
         save_path="models/ppo_model"
     ):
 
@@ -29,25 +30,46 @@ class PPOTrainer:
         self.model = PPO(
             policy="CnnPolicy",
             env=self.env,
+
             policy_kwargs=policy_kwargs,
-            verbose=1,
+
             learning_rate=3e-4,
-            gamma=0.99,
             n_steps=1024,
             batch_size=64,
+            n_epochs=10,
+
+            gamma=0.99,
+            gae_lambda=0.95,
+
+            clip_range=0.2,
+
+            ent_coef=0.01,
+            vf_coef=0.5,
+
+            max_grad_norm=0.5,
+
+            tensorboard_log="./logs/",
+
+            verbose=1,
+
             device="auto"
         )
 
         self.model.learn(
-            total_timesteps=total_timesteps
+            total_timesteps=total_timesteps,
+            progress_bar=True
         )
 
         os.makedirs("models", exist_ok=True)
 
         self.model.save(save_path)
 
-        print("\nModel Saved Successfully")
+        print("\n===================================")
+        print("Model Saved Successfully")
+        print("===================================")
 
+    ##################################################
+    # Load PPO Model
     ##################################################
 
     def load(
@@ -61,8 +83,12 @@ class PPOTrainer:
             device="auto"
         )
 
+        print("\n===================================")
         print("Model Loaded Successfully")
+        print("===================================")
 
+    ##################################################
+    # Predict Action
     ##################################################
 
     def predict(self, observation):
