@@ -1,3 +1,7 @@
+import networkx.generators.spectral_graph_forge
+import networkx.generators.spectral_graph_forge
+import networkx.generators.spectral_graph_forge
+import networkx.generators.spectral_graph_forge
 import numpy as np
 
 
@@ -34,6 +38,8 @@ class OccupancyGridGenerator:
     ############################################################
 
     def generate(self, points):
+        print("===== NEW OCCUPANCY GRID GENERATOR =====")
+        print("Fixed Size:", self.height, self.width)
 
         grid = np.zeros(
             (self.height, self.width),
