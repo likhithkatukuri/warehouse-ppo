@@ -55,7 +55,11 @@ class WarehouseDatasetEnvironment(gym.Env):
 
         self.grid_generator = OccupancyGridGenerator(
         resolution=resolution,
-        floor_threshold=floor_threshold
+        floor_threshold=floor_threshold,
+        xmin=-30,
+        xmax=30,
+        ymin=-30,
+        ymax=30
     )
 
         self.scan_names = self.loader.get_scan_names()
